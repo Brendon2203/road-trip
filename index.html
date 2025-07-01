@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viagem para o Show - 02/01/2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .slide {
+            display: none;
+            animation: fade 0.5s ease-in-out;
+        }
+        
+        @keyframes fade {
+            from {opacity: 0.4}
+            to {opacity: 1}
+        }
+        
+        .active-slide {
+            display: block;
+        }
+        
+        .dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .active-dot, .dot:hover {
+            background-color: #4f46e5;
+        }
+        
+        .admin-panel {
+            transition: all 0.3s ease;
+            max-height: none;
+            overflow: visible;
+        }
+        
+        .admin-panel.open {
+            max-height: none;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        .expandable-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .expandable-row:hover {
+            background: #ede9fe;
+        }
+        
+        .expand-content {
+            display: none;
+            background: #f5f3ff;
+        }
+        
+        .expand-content.open {
+            display: table-row;
+        }
+        
+        .months-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .delete-btn {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+        
+        .edit-input {
+            border: 1px solid #6366f1;
+            border-radius: 6px;
+            padding: 0.1rem 0.5rem;
+            font-size: 1.1rem;
+            width: 120px;
+            text-align: right;
+        }
+        
+        .action-btn {
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            margin: 0.5rem 0.5rem 0 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #6366f133;
+        }
+        
+        .action-btn:hover {
+            background: #3730a3;
+        }
+        
+        .banner-link-btn {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            z-index: 10;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.3rem;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px #6366f133;
+            cursor: pointer;
+            transition: background 0.2s;
+            opacity: 0.95;
+        }
+        
+        .banner-link-btn:hover {
+            background: #3730a3;
+            opacity: 1;
+        }
+        
+        .banner-link-container {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-2">Viagem para o Show</h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-purple-800">02 de Janeiro de 2026</h2>
+            
+            <!-- Countdown -->
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Contagem regressiva:</h3>
+                <div class="flex justify-center gap-4">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600" id="days">00</div>
+                        <div class="text-sm text-gray-600">Dias</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600" id="hours">00</div>
+                        <div class="text-sm text-gray-600">Horas</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600" id="minutes">00</div>
+                        <div class="text-sm text-gray-600">Minutos</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600" id="seconds">00</div>
+                        <div class="text-sm text-gray-600">Segundos</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Admin Panel Toggle -->
+        <div class="text-center mb-8">
+            <button id="adminToggle" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition duration-300">
+                <i class="fas fa-lock mr-2"></i> Acesso Administrativo
+            </button>
+        </div>
+
+        <!-- Admin Panel (Hidden by default) -->
+        <div id="adminPanel" class="admin-panel bg-white rounded-xl shadow-lg p-6 mb-10 max-w-4xl mx-auto" style="display:none">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Painel Administrativo</h3>
+            
+            <div class="mb-6">
+                <label for="newPerson" class="block text-sm font-medium text-gray-700 mb-1">Adicionar Pessoa:</label>
+                <div class="flex">
+                    <input type="text" id="newPerson" class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nome completo">
+                    <button id="addPersonBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
+                        <i class="fas fa-plus mr-1"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de Administrador:</label>
+                <input type="password" id="adminPassword" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Digite a senha">
+            </div>
+        </div>
+
+        <!-- House Gallery -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">A Casa Alugada</h3>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
+                <div class="px-6 py-4">
+                    <p class="text-gray-700">Casa espaçosa com 4 quartos, piscina e área de lazer, localizada a 15 minutos do local do show. Período de aluguel: 30/12/2025 a 03/01/2026.</p>
+                </div>
+                <!-- Slides -->
+                <div class="relative h-64 md:h-96">
+                    <div class="slide active-slide">
+                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Casa de luxo" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sala de estar" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cozinha moderna" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Quartos espaçosos" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Navigation arrows -->
+                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(-1, 'house')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(1, 'house')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <a href="https://www.airbnb.com/rooms/123456" target="_blank" class="banner-link-btn">Ver Casa no Airbnb</a>
+                </div>
+                
+                <!-- Dots -->
+                <div class="text-center py-4">
+                    <span class="dot active-dot" onclick="currentSlide(1, 'house')"></span>
+                    <span class="dot" onclick="currentSlide(2, 'house')"></span>
+                    <span class="dot" onclick="currentSlide(3, 'house')"></span>
+                    <span class="dot" onclick="currentSlide(4, 'house')"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Show Gallery -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">O Show e o DJ</h3>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
+                <div class="px-6 py-4">
+                    <p class="text-gray-700">Show do DJ Alok no dia 02/01/2026, com início às 22h. Local: Espaço de Eventos Premium, capacidade para 5.000 pessoas.</p>
+                </div>
+                <!-- Slides -->
+                <div class="relative h-64 md:h-96">
+                    <div class="slide active-slide">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Show de música eletrônica" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="DJ tocando" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Público animado" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Navigation arrows -->
+                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(-1, 'show')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(1, 'show')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <a href="https://www.ingressorapido.com/event/123456" target="_blank" class="banner-link-btn">Comprar Ingresso</a>
+                </div>
+                
+                <!-- Dots -->
+                <div class="text-center py-4">
+                    <span class="dot active-dot" onclick="currentSlide(1, 'show')"></span>
+                    <span class="dot" onclick="currentSlide(2, 'show')"></span>
+                    <span class="dot" onclick="currentSlide(3, 'show')"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Summary -->
+        <section class="mb-12 bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-6 text-center">Resumo Financeiro</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-indigo-50 rounded-lg p-4 text-center">
+                    <div class="text-sm font-medium text-indigo-700 mb-1">Valor Total</div>
+                    <div class="text-2xl font-bold text-indigo-900" id="totalHouseValue" style="cursor:pointer"></div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4 text-center">
+                    <div class="text-sm font-medium text-green-700 mb-1">Arrecadado</div>
+                    <div class="text-2xl font-bold text-green-900" id="totalPaid">R$ 0,00</div>
+                </div>
+                <div class="bg-red-50 rounded-lg p-4 text-center">
+                    <div class="text-sm font-medium text-red-700 mb-1">Falta Pagar</div>
+                    <div class="text-2xl font-bold text-red-900" id="remainingAmount">R$ 5.000,00</div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Progresso do pagamento</span>
+                    <span id="progressPercentage">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="progress-bar bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-purple-50 rounded-lg p-4">
+                    <div class="text-sm font-medium text-purple-700 mb-1">Valor por pessoa</div>
+                    <div class="text-xl font-bold text-purple-900" id="perPerson">R$ 0,00</div>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-sm font-medium text-blue-700 mb-1">Parcelas mensais</div>
+                    <div class="text-xl font-bold text-blue-900" id="monthlyPayment">R$ 0,00</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Participants List -->
+        <section class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-6 text-center">Lista de Participantes</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left border-b border-gray-200">
+                            <th class="pb-2 text-sm font-medium text-gray-700">Nome</th>
+                            <th class="pb-2 text-sm font-medium text-gray-700 text-center">Pagamento</th>
+                            <th class="pb-2 text-sm font-medium text-gray-700 text-right">Valor Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="participantsList">
+                        <!-- Participants will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 text-sm text-gray-500">
+                <i class="fas fa-info-circle mr-1"></i> Apenas o administrador pode editar os pagamentos.
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-600 text-sm">
+            <p>Viagem para o show em 02/01/2026 • Aluguel da casa: 30/12/2025 a 03/01/2026</p>
+            <p class="mt-1">Desenvolvido com ❤️ para amigos</p>
+        </footer>
+    </div>
+
+    <script>
+        // Countdown to the show
+        function updateCountdown() {
+            const showDate = new Date('2026-01-02T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = showDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Slideshow functionality
+        let slideIndex = {
+            house: 1,
+            show: 1
+        };
+        
+        function showSlides(type) {
+            let i;
+            const slides = document.querySelectorAll(`.${type}-slides .slide`);
+            const dots = document.querySelectorAll(`.${type}-dots .dot`);
+            
+            if (slides.length === 0) return;
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active-dot", "");
+            }
+            
+            slides[slideIndex[type]-1].style.display = "block";
+            dots[slideIndex[type]-1].className += " active-dot";
+        }
+        
+        function plusSlides(n, type) {
+            const slides = document.querySelectorAll(`.${type}-slides .slide`);
+            if (slides.length === 0) return;
+            
+            slideIndex[type] += n;
+            if (slideIndex[type] > slides.length) { slideIndex[type] = 1; }
+            if (slideIndex[type] < 1) { slideIndex[type] = slides.length; }
+            
+            // Hide all slides
+            const allSlides = document.querySelectorAll(`.slide`);
+            allSlides.forEach(slide => {
+                slide.classList.remove('active-slide');
+            });
+            
+            // Show current slide
+            const currentSlide = document.querySelectorAll(`.slide`)[getSlidePosition(type, slideIndex[type])];
+            currentSlide.classList.add('active-slide');
+            
+            // Update dots
+            const dots = document.querySelectorAll(`.dot`);
+            dots.forEach(dot => dot.classList.remove('active-dot'));
+            
+            const activeDot = document.querySelectorAll(`.dot`)[getSlidePosition(type, slideIndex[type])];
+            if (activeDot) activeDot.classList.add('active-dot');
+        }
+        
+        function currentSlide(n, type) {
+            slideIndex[type] = n;
+            showSlides(type);
+        }
+        
+        function getSlidePosition(type, index) {
+            if (type === 'house') {
+                return index - 1;
+            } else {
+                // For show slides, we need to offset by the number of house slides (4)
+                return 4 + (index - 1);
+            }
+        }
+        
+        // Initialize slides
+        showSlides('house');
+        showSlides('show');
+        
+        // Admin panel toggle
+        const adminToggle = document.getElementById('adminToggle');
+        const adminPanel = document.getElementById('adminPanel');
+        let isAdmin = false;
+        
+        function updateAdminPanel() {
+            if (isAdmin) {
+                adminPanel.style.display = '';
+            } else {
+                adminPanel.style.display = 'none';
+            }
+            // Sempre renderizar participantes e resumo, independente do admin
+            renderParticipants();
+            updatePaymentSummary();
+        }
+        
+        adminToggle.addEventListener('click', () => {
+            if (!isAdmin) {
+                const password = prompt("Digite a senha de administrador:");
+                if (password === "amigos2026") {
+                    isAdmin = true;
+                    adminToggle.innerHTML = '<i class="fas fa-unlock mr-2"></i> Modo Administrador Ativo';
+                    adminToggle.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                    adminToggle.classList.add('bg-green-600', 'hover:bg-green-700');
+                } else {
+                    alert("Senha incorreta!");
+                }
+            } else {
+                isAdmin = false;
+                adminToggle.innerHTML = '<i class="fas fa-lock mr-2"></i> Acesso Administrativo';
+                adminToggle.classList.remove('bg-green-600', 'hover:bg-green-700');
+                adminToggle.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+            }
+            updateAdminPanel();
+        });
+        
+        // Meses de Julho a Janeiro
+        const monthNames = ["Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"];
+        let totalHouseValue = parseFloat(localStorage.getItem('totalHouseValue')) || 5000;
+        let participants = JSON.parse(localStorage.getItem('participants_v2')) || [
+            { name: "João Silva", monthsPaid: [true, false, false, false, false, false, false] },
+            { name: "Maria Oliveira", monthsPaid: [true, true, false, false, false, false, false] },
+            { name: "Carlos Souza", monthsPaid: [true, true, true, false, false, false, false] },
+            { name: "Ana Santos", monthsPaid: [true, true, true, true, false, false, false] }
+        ];
+        function saveParticipants() {
+            localStorage.setItem('participants_v2', JSON.stringify(participants));
+        }
+        function getPerPerson() {
+            return participants.length > 0 ? totalHouseValue / participants.length : 0;
+        }
+        function getPerMonth() {
+            return getPerPerson() / 7;
+        }
+        function getTotalPaid() {
+            let total = 0;
+            participants.forEach(p => {
+                total += p.monthsPaid.filter(Boolean).length * getPerMonth();
+            });
+            return total;
+        }
+        let expandedIdx = null;
+        function renderParticipants() {
+            const participantsList = document.getElementById('participantsList');
+            participantsList.innerHTML = '';
+            participants.forEach((participant, idx) => {
+                // Linha principal
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-gray-100 expandable-row';
+                tr.onclick = function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('delete-btn')) return;
+                    // Fechar se já está aberto, abrir se não está
+                    if (expandedIdx === idx) {
+                        expandedIdx = null;
+                    } else {
+                        expandedIdx = idx;
+                    }
+                    renderParticipants();
+                };
+                // Nome
+                const tdName = document.createElement('td');
+                tdName.className = 'py-3 text-indigo-900 font-semibold';
+                tdName.textContent = participant.name;
+                // Pagamento geral
+                const tdStatus = document.createElement('td');
+                tdStatus.className = 'py-3 text-center';
+                const pagos = participant.monthsPaid.filter(Boolean).length;
+                tdStatus.innerHTML = `<span class="${pagos === 7 ? 'text-green-600' : pagos > 0 ? 'text-yellow-600' : 'text-red-600'} font-medium">${pagos === 7 ? 'Completo' : pagos > 0 ? 'Parcial' : 'Pendente'}</span>`;
+                // Valor pago
+                const tdValor = document.createElement('td');
+                tdValor.className = 'py-3 text-right font-medium';
+                tdValor.innerHTML = `R$ ${(pagos * getPerMonth()).toFixed(2).replace('.', ',')}`;
+                tr.appendChild(tdName);
+                tr.appendChild(tdStatus);
+                tr.appendChild(tdValor);
+                participantsList.appendChild(tr);
+                // Linha expansível
+                const trExpand = document.createElement('tr');
+                trExpand.className = 'expand-content' + (expandedIdx === idx ? ' open' : '');
+                trExpand.id = 'expand-' + idx;
+                const tdExpand = document.createElement('td');
+                tdExpand.colSpan = 3;
+                tdExpand.className = 'py-2 px-4';
+                // Meses com checkbox (em coluna)
+                let mesesHtml = '<div class="months-list">';
+                participant.monthsPaid.forEach((paid, mIdx) => {
+                    mesesHtml += `<label class="flex items-center gap-2 bg-white rounded shadow px-2 py-1">
+                        <input type="checkbox" data-pidx="${idx}" data-midx="${mIdx}" ${paid ? 'checked' : ''} ${!isAdmin ? 'disabled' : ''} onchange="toggleMonthPayment(this)">
+                        <span class="${paid ? 'text-green-700' : 'text-gray-700'}">${monthNames[mIdx]}</span>
+                        <span class="text-xs ml-1">R$ ${getPerMonth().toFixed(2).replace('.', ',')}</span>
+                    </label>`;
+                });
+                mesesHtml += '</div>';
+                // Botão de excluir
+                if (isAdmin) {
+                    mesesHtml += `<button class="delete-btn" onclick="deleteParticipant(${idx})">Excluir participante</button>`;
+                }
+                tdExpand.innerHTML = mesesHtml;
+                trExpand.appendChild(tdExpand);
+                participantsList.appendChild(trExpand);
+            });
+            updatePaymentSummary();
+        }
+        window.toggleMonthPayment = function(checkbox) {
+            if (!isAdmin) return;
+            const pidx = +checkbox.dataset.pidx;
+            const midx = +checkbox.dataset.midx;
+            participants[pidx].monthsPaid[midx] = checkbox.checked;
+            saveParticipants();
+            renderParticipants();
+        };
+        window.deleteParticipant = function(idx) {
+            if (!isAdmin) return;
+            if (confirm('Tem certeza que deseja excluir este participante?')) {
+                participants.splice(idx, 1);
+                saveParticipants();
+                expandedIdx = null;
+                renderParticipants();
+            }
+        };
+        function updatePaymentSummary() {
+            const totalPaid = getTotalPaid();
+            const remaining = totalHouseValue - totalPaid;
+            const progress = (totalPaid / totalHouseValue) * 100;
+            document.getElementById('totalPaid').textContent = `R$ ${totalPaid.toFixed(2).replace('.', ',')}`;
+            document.getElementById('remainingAmount').textContent = `R$ ${remaining.toFixed(2).replace('.', ',')}`;
+            document.getElementById('progressPercentage').textContent = `${progress.toFixed(0)}%`;
+            document.getElementById('perPerson').textContent = `R$ ${getPerPerson().toFixed(2).replace('.', ',')}`;
+            document.getElementById('monthlyPayment').textContent = `R$ ${getPerMonth().toFixed(2).replace('.', ',')}`;
+            // Valor total editável
+            const totalValueDiv = document.getElementById('totalHouseValue');
+            if (isAdmin) {
+                totalValueDiv.innerHTML = `<span id='editTotalValue'>R$ ${totalHouseValue.toFixed(2).replace('.', ',')}</span>`;
+            } else {
+                totalValueDiv.textContent = `R$ ${totalHouseValue.toFixed(2).replace('.', ',')}`;
+            }
+            if (isAdmin) {
+                const editSpan = document.getElementById('editTotalValue');
+                editSpan.onclick = function(e) {
+                    e.stopPropagation();
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.className = 'edit-input';
+                    input.value = totalHouseValue;
+                    input.onblur = saveEdit;
+                    input.onkeydown = function(ev) { if (ev.key === 'Enter') saveEdit(); };
+                    editSpan.replaceWith(input);
+                    input.focus();
+                    function saveEdit() {
+                        let val = parseFloat(input.value);
+                        if (!isNaN(val) && val > 0) {
+                            totalHouseValue = val;
+                            localStorage.setItem('totalHouseValue', totalHouseValue);
+                            renderParticipants();
+                        } else {
+                            input.value = totalHouseValue;
+                        }
+                    }
+                };
+            }
+        }
+        document.getElementById('addPersonBtn').addEventListener('click', () => {
+            if (!isAdmin) {
+                alert("Apenas o administrador pode adicionar pessoas.");
+                return;
+            }
+            const nameInput = document.getElementById('newPerson');
+            const name = nameInput.value.trim();
+            if (name) {
+                participants.push({ name, monthsPaid: [false, false, false, false, false, false, false] });
+                saveParticipants();
+                nameInput.value = '';
+                renderParticipants();
+            }
+        });
+        // Initialize
+        updateAdminPanel();
+        showSlides('house');
+        showSlides('show');
+    </script>
+</body>
+</html>
