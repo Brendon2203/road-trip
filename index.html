@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viagem para o Show - 02/01/2026</title>
+    <title>ROAD-TRIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -137,6 +137,31 @@
             background: #3730a3;
             opacity: 1;
         }
+
+          .inicial-link-btn {
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            margin: auto;
+            display:flex;
+            width: 300px;
+            background: #51e085;
+            color: #fff;
+            
+            border-radius: 8px;
+            padding: 0.6rem 1.3rem;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px #6366f133;
+            cursor: pointer;
+            transition: background 0.2s;
+            opacity: 0.95;
+            margin-top: 40px;
+        }
+        
+        .inicial-link-btn:hover {
+            background: #18e061;
+            opacity: 1;
+        }
         
         .banner-link-container {
             position: relative;
@@ -147,12 +172,13 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-2">Viagem para o Show</h1>
-            <h2 class="text-2xl md:text-3xl font-semibold text-purple-800">02 de Janeiro de 2026</h2>
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-2">Viagem para o show do Martin Garrix</h1>
+            <br>
+            <h2 class="text-2xl md:text-3xl font-semibold text-purple-800">O Show vai acontecer no dia: <br><br> 02 de Janeiro de 2026</h2>
             
             <!-- Countdown -->
             <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Contagem regressiva:</h3>
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Contagem regressiva para o show:</h3>
                 <div class="flex justify-center gap-4">
                     <div class="text-center">
                         <div class="text-3xl font-bold text-indigo-600" id="days">00</div>
@@ -172,42 +198,33 @@
                     </div>
                 </div>
             </div>
+            <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="inicial-link-btn">Comprar Ingresso para o show!!</a>
         </header>
-
-        <!-- Admin Panel Toggle -->
-        <div class="text-center mb-8">
-            <button id="adminToggle" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition duration-300">
-                <i class="fas fa-lock mr-2"></i> Acesso Administrativo
-            </button>
-        </div>
-
-        <!-- Admin Panel (Hidden by default) -->
-        <div id="adminPanel" class="admin-panel bg-white rounded-xl shadow-lg p-6 mb-10 max-w-4xl mx-auto" style="display:none">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Painel Administrativo</h3>
-            
-            <div class="mb-6">
-                <label for="newPerson" class="block text-sm font-medium text-gray-700 mb-1">Adicionar Pessoa:</label>
-                <div class="flex">
-                    <input type="text" id="newPerson" class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nome completo">
-                    <button id="addPersonBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
-                        <i class="fas fa-plus mr-1"></i> Adicionar
-                    </button>
-                </div>
+         <!-- Planejamento do rolé -->
+        <section>
+            <h3 class="text-3xl font-semibold text-indigo-900 mb-4 text-center">Planejamento do Rolé</h3>
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
+                <p class="text-gray-700 text-center">Vamos juntar alguns amigos e alugar uma casa ou hotel em Guarapari para passar a virada do ano por lá e já aproveitar e ficar para o show do Martin Garrix. A data planejada para o check-in é no dia 30/12/2025 e a data prevista para check-out está prevista para o dia 03/01/2026.</p>
+                <br>
+                <p class="text-gray-700 text-center">Com isso em mente estamos planejando uma vaquinha para que essa viagem aconteça, levando em consideração a alimentação, transporte, hospedagem, passeios (se for da vontade de todos) e uma eventual emergencia.</p>
+                <br>
+                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Observações</h3>
+                <br>
+                <p class="text-gray-700 text-center">Os interresado em fazer parte teram que entrar em contato pelo whatsapp para ver as vagas disponiveis. As vagas são limitadas então entre em contato o mais rapido possivel.<br><br> O valor para a viagem sera dividido igualmente para todos os participantes, e uma vez que tenha sido efetuado o pagamento da primeira parecela seu nome já estara na lista para participar. 
+                <br> <br> Caso ocorra de algum dos participantes não puder mais participar do rolé proposto será retido 30% a 50% do valor investido para evitar que os demais participantes sejam prejudicados com a saida do colega, a porcentage retida diminui de acordo com tempo investido, quanto mais tempo investido menor a porcentagem do valor retido quanto menor o tempo investido mais sera a porcentagem do valor retido. <br><br> Sera devolvido apenas o restante do valor investido.
+                Entrar em contato via whatsapp pra retirar qualquer duvida.
+                </p>
+                <br>
+                <a href="https://wa.me/5527999199096" target="_blank" class="inicial-link-btn">Quero fazer esse role acontecer!</a>
             </div>
-            
-            <div class="mb-4">
-                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de Administrador:</label>
-                <input type="password" id="adminPassword" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Digite a senha">
-            </div>
-        </div>
-
+        </section>
         <!-- House Gallery -->
         <section class="mb-12">
-            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">A Casa Alugada</h3>
-            
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Informações sobre a casa</h3>
+            <h3 class=" font-semibold text-indigo-900 mb-4 text-center">(A casa ainda não foi decidida )</h3>
             <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
                 <div class="px-6 py-4">
-                    <p class="text-gray-700">Casa espaçosa com 4 quartos, piscina e área de lazer, localizada a 15 minutos do local do show. Período de aluguel: 30/12/2025 a 03/01/2026.</p>
+                    <p class="text-gray-700">Estamos pensando em uma casa grande com quartos individuias e com espaço pra recreação como psicina ou uma área externa. </p>
                 </div>
                 <!-- Slides -->
                 <div class="relative h-64 md:h-96">
@@ -242,6 +259,11 @@
                     <span class="dot" onclick="currentSlide(4, 'house')"></span>
                 </div>
             </div>
+
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center mt-4">Localização da casa</h3>
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.8254032395143!2d-40.525017724820664!3d-20.71731338085521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f96070ebee7d%3A0x191ece0a919d27d2!2sBrava%20Beach%20Club!5e0!3m2!1spt-BR!2sbr!4v1751494977574!5m2!1spt-BR!2sbr" width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
+            </div>
         </section>
 
         <!-- Show Gallery -->
@@ -250,7 +272,7 @@
             
             <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
                 <div class="px-6 py-4">
-                    <p class="text-gray-700">Show do DJ Alok no dia 02/01/2026, com início às 22h. Local: Espaço de Eventos Premium, capacidade para 5.000 pessoas.</p>
+                    <p class="text-gray-700">No dia 2 de Janeiro, o fenômeno MARTIN GARRIX chega no Brava Beach Club para uma noite histórica no Espírito Santo! </p>
                 </div>
                 <!-- Slides -->
                 <div class="relative h-64 md:h-96">
@@ -281,9 +303,15 @@
                     <span class="dot" onclick="currentSlide(3, 'show')"></span>
                 </div>
             </div>
+
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center mt-8">Localização do evento</h3>
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.8254032395143!2d-40.525017724820664!3d-20.71731338085521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f96070ebee7d%3A0x191ece0a919d27d2!2sBrava%20Beach%20Club!5e0!3m2!1spt-BR!2sbr!4v1751494977574!5m2!1spt-BR!2sbr" width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
+            </div>
         </section>
 
         <!-- Payment Summary -->
+         <h3 class="text-2xl font-semibold text-indigo-900 mb-8 text-center mt-4 ">Orçamento necessario para o rolé</h3>
         <section class="mb-12 bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
             <h3 class="text-2xl font-semibold text-indigo-900 mb-6 text-center">Resumo Financeiro</h3>
             
@@ -323,6 +351,33 @@
                 </div>
             </div>
         </section>
+
+         <!-- Admin Panel Toggle -->
+        <div class="text-center mb-8">
+            <button id="adminToggle" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition duration-300">
+                <i class="fas fa-lock mr-2"></i> Acesso Administrativo
+            </button>
+        </div>
+
+        <!-- Admin Panel (Hidden by default) -->
+        <div id="adminPanel" class="admin-panel bg-white rounded-xl shadow-lg p-6 mb-10 max-w-4xl mx-auto" style="display:none">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Painel Administrativo</h3>
+            
+            <div class="mb-6">
+                <label for="newPerson" class="block text-sm font-medium text-gray-700 mb-1">Adicionar Pessoa:</label>
+                <div class="flex">
+                    <input type="text" id="newPerson" class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nome completo">
+                    <button id="addPersonBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
+                        <i class="fas fa-plus mr-1"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de Administrador:</label>
+                <input type="password" id="adminPassword" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Digite a senha">
+            </div>
+        </div>
 
         <!-- Participants List -->
         <section class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
