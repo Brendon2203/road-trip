@@ -560,15 +560,39 @@
         
         // Meses de Julho a Janeiro
         const monthNames = ["Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"];
-        let totalHouseValue = parseFloat(localStorage.getItem('totalHouseValue')) || 5000;
-        let participants = JSON.parse(localStorage.getItem('participants_v2')) || [
-            { name: "João Silva", monthsPaid: [true, false, false, false, false, false, false] },
-            { name: "Maria Oliveira", monthsPaid: [true, true, false, false, false, false, false] },
-            { name: "Carlos Souza", monthsPaid: [true, true, true, false, false, false, false] },
-            { name: "Ana Santos", monthsPaid: [true, true, true, true, false, false, false] }
-        ];
-        function saveParticipants() {
-            localStorage.setItem('participants_v2', JSON.stringify(participants));
+        let totalHouseValue = 5000;
+        let participants = [];
+        let expandedIdx = null;
+        // Referências do Firestore
+        const totalValueDoc = db.collection('viagem').doc('totalHouseValue');
+        const participantsCol = db.collection('viagem').doc('data').collection('participants');
+
+        // Carregar valor total em tempo real
+        totalValueDoc.onSnapshot(doc => {
+            if (doc.exists) {
+                totalHouseValue = doc.data().value;
+                renderParticipants();
+            }
+        });
+        // Carregar participantes em tempo real
+        participantsCol.orderBy('name').onSnapshot(snapshot => {
+            participants = [];
+            snapshot.forEach(doc => {
+                participants.push({ ...doc.data(), id: doc.id });
+            });
+            renderParticipants();
+        });
+        function saveTotalHouseValue(val) {
+            totalValueDoc.set({ value: val });
+        }
+        function addParticipant(name) {
+            participantsCol.add({ name, monthsPaid: [false, false, false, false, false, false, false] });
+        }
+        function updateParticipant(id, data) {
+            participantsCol.doc(id).update(data);
+        }
+        function deleteParticipantFirestore(id) {
+            participantsCol.doc(id).delete();
         }
         function getPerPerson() {
             return participants.length > 0 ? totalHouseValue / participants.length : 0;
@@ -583,7 +607,6 @@
             });
             return total;
         }
-        let expandedIdx = null;
         function renderParticipants() {
             const participantsList = document.getElementById('participantsList');
             participantsList.innerHTML = '';
@@ -593,7 +616,6 @@
                 tr.className = 'border-b border-gray-100 expandable-row';
                 tr.onclick = function(e) {
                     if (e.target.tagName === 'INPUT' || e.target.classList.contains('delete-btn')) return;
-                    // Fechar se já está aberto, abrir se não está
                     if (expandedIdx === idx) {
                         expandedIdx = null;
                     } else {
@@ -635,9 +657,8 @@
                     </label>`;
                 });
                 mesesHtml += '</div>';
-                // Botão de excluir
                 if (isAdmin) {
-                    mesesHtml += `<button class="delete-btn" onclick="deleteParticipant(${idx})">Excluir participante</button>`;
+                    mesesHtml += `<button class="delete-btn" onclick="deleteParticipant('${participant.id}')">Excluir participante</button>`;
                 }
                 tdExpand.innerHTML = mesesHtml;
                 trExpand.appendChild(tdExpand);
@@ -649,17 +670,16 @@
             if (!isAdmin) return;
             const pidx = +checkbox.dataset.pidx;
             const midx = +checkbox.dataset.midx;
-            participants[pidx].monthsPaid[midx] = checkbox.checked;
-            saveParticipants();
-            renderParticipants();
+            const participant = participants[pidx];
+            const newMonthsPaid = [...participant.monthsPaid];
+            newMonthsPaid[midx] = checkbox.checked;
+            updateParticipant(participant.id, { monthsPaid: newMonthsPaid });
         };
-        window.deleteParticipant = function(idx) {
+        window.deleteParticipant = function(id) {
             if (!isAdmin) return;
             if (confirm('Tem certeza que deseja excluir este participante?')) {
-                participants.splice(idx, 1);
-                saveParticipants();
+                deleteParticipantFirestore(id);
                 expandedIdx = null;
-                renderParticipants();
             }
         };
         function updatePaymentSummary() {
@@ -693,9 +713,7 @@
                     function saveEdit() {
                         let val = parseFloat(input.value);
                         if (!isNaN(val) && val > 0) {
-                            totalHouseValue = val;
-                            localStorage.setItem('totalHouseValue', totalHouseValue);
-                            renderParticipants();
+                            saveTotalHouseValue(val);
                         } else {
                             input.value = totalHouseValue;
                         }
@@ -711,10 +729,8 @@
             const nameInput = document.getElementById('newPerson');
             const name = nameInput.value.trim();
             if (name) {
-                participants.push({ name, monthsPaid: [false, false, false, false, false, false, false] });
-                saveParticipants();
+                addParticipant(name);
                 nameInput.value = '';
-                renderParticipants();
             }
         });
         // Initialize
