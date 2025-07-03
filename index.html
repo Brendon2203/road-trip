@@ -6,6 +6,28 @@
     <title>ROAD-TRIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+     <!-- Firebase SDKs compatíveis com HTML puro -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+    // Sua configuração Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCpnWEUipuAR_Mx1IFuaSzsqFq7bi7MWx0",
+        authDomain: "road-trip-17bfc.firebaseapp.com",
+        projectId: "road-trip-17bfc",
+        storageBucket: "road-trip-17bfc.firebasestorage.app",
+        messagingSenderId: "919284765323",
+        appId: "1:919284765323:web:a7a0a2354affd43a44ba8e",
+        measurementId: "G-62KCWR7Y2Y"
+    };
+
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    </script>
+
     <style>
         .slide {
             display: none;
