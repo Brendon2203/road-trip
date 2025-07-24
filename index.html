@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-     <!-- Firebase SDKs compatíveis com HTML puro -->
+    <!-- Firebase SDKs compatíveis com HTML puro -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <script>
-    // Sua configuração Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyCpnWEUipuAR_Mx1IFuaSzsqFq7bi7MWx0",
-        authDomain: "road-trip-17bfc.firebaseapp.com",
-        projectId: "road-trip-17bfc",
-        storageBucket: "road-trip-17bfc.firebasestorage.app",
-        messagingSenderId: "919284765323",
-        appId: "1:919284765323:web:a7a0a2354affd43a44ba8e",
-        measurementId: "G-62KCWR7Y2Y"
-    };
+        // Sua configuração Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpnWEUipuAR_Mx1IFuaSzsqFq7bi7MWx0",
+            authDomain: "road-trip-17bfc.firebaseapp.com",
+            projectId: "road-trip-17bfc",
+            storageBucket: "road-trip-17bfc.firebasestorage.app",
+            messagingSenderId: "919284765323",
+            appId: "1:919284765323:web:a7a0a2354affd43a44ba8e",
+            measurementId: "G-62KCWR7Y2Y"
+        };
 
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+        // Inicializa Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
     </script>
 
     <style>
@@ -33,16 +34,21 @@
             display: none;
             animation: fade 0.5s ease-in-out;
         }
-        
+
         @keyframes fade {
-            from {opacity: 0.4}
-            to {opacity: 1}
+            from {
+                opacity: 0.4
+            }
+
+            to {
+                opacity: 1
+            }
         }
-        
+
         .active-slide {
             display: block;
         }
-        
+
         .dot {
             cursor: pointer;
             height: 10px;
@@ -53,49 +59,50 @@
             display: inline-block;
             transition: background-color 0.3s ease;
         }
-        
-        .active-dot, .dot:hover {
+
+        .active-dot,
+        .dot:hover {
             background-color: #4f46e5;
         }
-        
+
         .admin-panel {
             transition: all 0.3s ease;
             max-height: none;
             overflow: visible;
         }
-        
+
         .admin-panel.open {
             max-height: none;
         }
-        
+
         .progress-bar {
             transition: width 0.5s ease;
         }
-        
+
         .expandable-row {
             cursor: pointer;
             transition: background 0.2s;
         }
-        
+
         .expandable-row:hover {
             background: #ede9fe;
         }
-        
+
         .expand-content {
             display: none;
             background: #f5f3ff;
         }
-        
+
         .expand-content.open {
             display: table-row;
         }
-        
+
         .months-list {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
         }
-        
+
         .delete-btn {
             background: #dc2626;
             color: #fff;
@@ -107,11 +114,11 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        
+
         .delete-btn:hover {
             background: #b91c1c;
         }
-        
+
         .edit-input {
             border: 1px solid #6366f1;
             border-radius: 6px;
@@ -120,7 +127,7 @@
             width: 120px;
             text-align: right;
         }
-        
+
         .action-btn {
             background: #4f46e5;
             color: #fff;
@@ -133,11 +140,11 @@
             transition: background 0.2s;
             box-shadow: 0 2px 8px #6366f133;
         }
-        
+
         .action-btn:hover {
             background: #3730a3;
         }
-        
+
         .banner-link-btn {
             position: absolute;
             right: 1.5rem;
@@ -154,22 +161,22 @@
             transition: background 0.2s;
             opacity: 0.95;
         }
-        
+
         .banner-link-btn:hover {
             background: #3730a3;
             opacity: 1;
         }
 
-          .inicial-link-btn {
+        .inicial-link-btn {
             justify-content: center;
             text-align: center;
             align-items: center;
             margin: auto;
-            display:flex;
+            display: flex;
             width: 300px;
             background: #51e085;
             color: #fff;
-            
+
             border-radius: 8px;
             padding: 0.6rem 1.3rem;
             font-size: 1rem;
@@ -179,25 +186,28 @@
             opacity: 0.95;
             margin-top: 40px;
         }
-        
+
         .inicial-link-btn:hover {
             background: #18e061;
             opacity: 1;
         }
-        
+
         .banner-link-container {
             position: relative;
         }
     </style>
 </head>
+
 <body class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-2">Viagem para o show do Martin Garrix</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-2">🌟 Virada do Ano em Guarapari + Show do
+                Martin Garrix 🎉</h1>
             <br>
-            <h2 class="text-2xl md:text-3xl font-semibold text-purple-800">O Show vai acontecer no dia: <br><br> 02 de Janeiro de 2026</h2>
-            
+            <h2 class="text-2xl md:text-3xl font-semibold text-purple-800">O Show vai acontecer no dia: <br><br> 02 de
+                Janeiro de 2026</h2>
+
             <!-- Countdown -->
             <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Contagem regressiva para o show:</h3>
@@ -220,59 +230,104 @@
                     </div>
                 </div>
             </div>
-            <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="inicial-link-btn">Comprar Ingresso para o show!!</a>
+            <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="inicial-link-btn">Comprar
+                Ingresso para o show!!</a>
         </header>
-         <!-- Planejamento do rolé -->
+        <!-- Planejamento do rolé -->
         <section>
-            <h3 class="text-3xl font-semibold text-indigo-900 mb-4 text-center">Planejamento do Rolé</h3>
-            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
-                <p class="text-gray-700 text-center">Vamos juntar alguns amigos e alugar uma casa ou hotel em Guarapari para passar a virada do ano por lá e já aproveitar e ficar para o show do Martin Garrix. A data planejada para o check-in é no dia 30/12/2025 e a data prevista para check-out está prevista para o dia 03/01/2026.</p>
+            <h3 class="text-3xl font-semibold text-indigo-900 mb-4 text-center">Comprei meu ingresso e agora?</h3>
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10 p-8">
+                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 ">🚙 Planejamento </h3>
+                <p class="text-gray-700">Estamos organizando uma viagem em grupo para curtir a virada do ano em
+                    Guarapari e, de quebra, aproveitar o show do Martin Garrix! A ideia é reunir os amigos e alugar uma
+                    casa ou hotel para garantir bons momentos juntos.</p>
                 <br>
-                <p class="text-gray-700 text-center">Com isso em mente estamos planejando uma vaquinha para que essa viagem aconteça, levando em consideração a alimentação, transporte, hospedagem, passeios (se for da vontade de todos) e uma eventual emergencia.</p>
+                <p class="text-gray-700 font-bold ml-4">📅 Datas da viagem</p>
                 <br>
-                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Observações</h3>
+                <li class="ml-8"> Check-in: 30/12/2025</li>
+                <li class="ml-8"> Check-out: 04/01/2026</li>
                 <br>
-                <p class="text-gray-700 text-center">Os interresado em fazer parte teram que entrar em contato pelo whatsapp para ver as vagas disponiveis. As vagas são limitadas então entre em contato o mais rapido possivel.<br><br> O valor para a viagem sera dividido igualmente para todos os participantes, e uma vez que tenha sido efetuado o pagamento da primeira parecela seu nome já estara na lista para participar. 
-                <br> <br> Caso ocorra de algum dos participantes não puder mais participar do rolé proposto será retido 30% a 50% do valor investido para evitar que os demais participantes sejam prejudicados com a saida do colega, a porcentage retida diminui de acordo com tempo investido, quanto mais tempo investido menor a porcentagem do valor retido quanto menor o tempo investido mais sera a porcentagem do valor retido. <br><br> Sera devolvido apenas o restante do valor investido.
-                Entrar em contato via whatsapp pra retirar qualquer duvida.
-                </p>
+                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 ">💰 Organização da Viagem</h3>
+                <li class="ml-8"> Hospedagem</li>
+                <li class="ml-8"> Alimentação</li>
+                <li class="ml-8"> Transporte</li>
+                <li class="ml-8"> Passeios (opcional, conforme interesse do grupo)</li>
+                <li class="ml-8"> Reserva para emergências</li>
                 <br>
-                <a href="https://wa.me/5527999199096" target="_blank" class="inicial-link-btn">Quero fazer esse role acontecer!</a>
+                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 ">✅ Como Participar</h3>
+                <br>
+
+                <li class="ml-8"> Entre em contato pelo WhatsApp para saber se ainda há vagas disponíveis.
+                    ⚠️ As vagas são limitadas, então é importante garantir a sua o quanto antes</li>
+                <br>
+                <li class="ml-8"> O valor total será dividido igualmente entre todos os participantes.</li>
+                <br>
+                <li class="ml-8"> Após o pagamento da primeira parcela, seu nome estará confirmado na lista oficial
+                    da viagem.</li>
+                <br>
+                <h3 class="text-2xl font-semibold text-indigo-900 mb-4 ">❗ Política de Cancelamento</h3>
+                <p>Caso alguém desista após confirmar a participação, será retido entre 30% a 50% do valor já investido,
+                    para evitar prejuízos aos demais.</p>
+                <br>
+                <p>A porcentagem retida depende do tempo de organização já investido:</p>
+                <br>
+                <li class="ml-8">Quanto mais cedo o cancelamento, maior a porcentagem retida.</li>
+                <br>
+                <li class="ml-8"> Quanto mais tarde o cancelamento, menor a porcentagem retida.</li>
+                <br>
+                <a href="https://chat.whatsapp.com/CxhD33Q1oW6KlUbdqVgD7u" target="_blank"
+                    class="inicial-link-btn">Quero fazer esse role acontecer!</a>
             </div>
         </section>
         <!-- House Gallery -->
         <section class="mb-12">
             <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Informações sobre a casa</h3>
-            <h3 class=" font-semibold text-indigo-900 mb-4 text-center">(A casa ainda não foi decidida )</h3>
             <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
                 <div class="px-6 py-4">
-                    <p class="text-gray-700">Estamos pensando em uma casa grande com quartos individuias e com espaço pra recreação como psicina ou uma área externa. </p>
+                    <p>Casa aconchegante a 300m da Praia de Peracanga, perto da Bacutia e do
+                        centro de Guarapari. A 3 min do Multiplace Mais e 6 min da P12. Possui piscina com
+                        cascata, hidromassagem, área gourmet com churrasqueira e cervejeira, sala com TV de 65”
+                        e cozinha completa. Ideal para curtir com amigos ou família!
+
+                    </p>
                 </div>
                 <!-- Slides -->
                 <div class="relative h-64 md:h-96">
                     <div class="slide active-slide">
-                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Casa de luxo" class="w-full h-full object-cover">
+                        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI4NzYzNzAzMjQ1Mjk4MjQyNg%3D%3D/original/644bf022-913e-4afd-86a4-d8dd9e8bbbaa.jpeg?im_w=1440"
+                            alt="Casa de luxo" class="w-full h-full object-cover">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sala de estar" class="w-full h-full object-cover">
+                        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1287637032452982426/original/0496cfae-46b0-48ee-9ff0-3cbdb21b0795.jpeg?im_w=1440"
+                            alt="Sala de estar" class="w-full h-full object-cover">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cozinha moderna" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Cozinha moderna" class="w-full h-full object-cover">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Quartos espaçosos" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Quartos espaçosos" class="w-full h-full object-cover">
+
                     </div>
-                    
+
                     <!-- Navigation arrows -->
-                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(-1, 'house')">
+                    <button
+                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300"
+                        onclick="plusSlides(-1, 'house')">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(1, 'house')">
+                    <button
+                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300"
+                        onclick="plusSlides(1, 'house')">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    <a href="https://www.airbnb.com/rooms/123456" target="_blank" class="banner-link-btn">Ver Casa no Airbnb</a>
+                    <a href="https://www.airbnb.com.br/rooms/1287637032452982426?adults=7&check_in=2025-12-30&check_out=2026-01-04&search_mode=regular_search&source_impression_id=p3_1753106112_P33LOpIw5vibLVtm&previous_page_section_name=1000&federated_search_id=60ce5b81-706c-4278-9eb8-d4f61d9b9b71"
+                        target="_blank" class="banner-link-btn">Ver Casa no Airbnb</a>
+
+
                 </div>
-                
+
                 <!-- Dots -->
                 <div class="text-center py-4">
                     <span class="dot active-dot" onclick="currentSlide(1, 'house')"></span>
@@ -280,44 +335,57 @@
                     <span class="dot" onclick="currentSlide(3, 'house')"></span>
                     <span class="dot" onclick="currentSlide(4, 'house')"></span>
                 </div>
+
             </div>
 
             <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center mt-4">Localização da casa</h3>
             <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.8254032395143!2d-40.525017724820664!3d-20.71731338085521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f96070ebee7d%3A0x191ece0a919d27d2!2sBrava%20Beach%20Club!5e0!3m2!1spt-BR!2sbr!4v1751494977574!5m2!1spt-BR!2sbr" width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d932.8916241116619!2d-40.53132417152731!3d-20.727820944499594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f91fb50bb667%3A0xf94941da868b420e!2sR.%20la%20Paloma%2C%20371%20-%20Enseada%20Azul%2C%20Guarapari%20-%20ES%2C%2029206-090!5e0!3m2!1spt-BR!2sbr!4v1753365303376!5m2!1spt-BR!2sbr"
+                    width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
             </div>
         </section>
 
         <!-- Show Gallery -->
         <section class="mb-12">
             <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">O Show e o DJ</h3>
-            
+
             <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto banner-link-container">
                 <div class="px-6 py-4">
-                    <p class="text-gray-700">No dia 2 de Janeiro, o fenômeno MARTIN GARRIX chega no Brava Beach Club para uma noite histórica no Espírito Santo! </p>
+                    <p class="text-gray-700">No dia 2 de Janeiro, o fenômeno MARTIN GARRIX chega no Brava Beach Club
+                        para uma noite histórica no Espírito Santo! </p>
                 </div>
                 <!-- Slides -->
                 <div class="relative h-64 md:h-96">
                     <div class="slide active-slide">
-                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Show de música eletrônica" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Show de música eletrônica" class="w-full h-full object-cover">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="DJ tocando" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="DJ tocando" class="w-full h-full object-cover">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Público animado" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
+                            alt="Público animado" class="w-full h-full object-cover">
                     </div>
-                    
+
                     <!-- Navigation arrows -->
-                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(-1, 'show')">
+                    <button
+                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300"
+                        onclick="plusSlides(-1, 'show')">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300" onclick="plusSlides(1, 'show')">
+                    <button
+                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition duration-300"
+                        onclick="plusSlides(1, 'show')">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    <a href="https://www.ingressorapido.com/event/123456" target="_blank" class="banner-link-btn">Comprar Ingresso</a>
+                    <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="banner-link-btn">Comprar
+                        Ingresso</a>
                 </div>
-                
+
                 <!-- Dots -->
                 <div class="text-center py-4">
                     <span class="dot active-dot" onclick="currentSlide(1, 'show')"></span>
@@ -328,15 +396,18 @@
 
             <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center mt-8">Localização do evento</h3>
             <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.8254032395143!2d-40.525017724820664!3d-20.71731338085521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f96070ebee7d%3A0x191ece0a919d27d2!2sBrava%20Beach%20Club!5e0!3m2!1spt-BR!2sbr!4v1751494977574!5m2!1spt-BR!2sbr" width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.8254032395143!2d-40.525017724820664!3d-20.71731338085521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb8f96070ebee7d%3A0x191ece0a919d27d2!2sBrava%20Beach%20Club!5e0!3m2!1spt-BR!2sbr!4v1751494977574!5m2!1spt-BR!2sbr"
+                    width="80%" height="450px" style="border-radius:16px;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" class="mx-auto"></iframe>
             </div>
         </section>
 
         <!-- Payment Summary -->
-         <h3 class="text-2xl font-semibold text-indigo-900 mb-8 text-center mt-4 ">Orçamento necessario para o rolé</h3>
+        <h3 class="text-2xl font-semibold text-indigo-900 mb-8 text-center mt-4 ">Orçamento necessario para o rolé</h3>
         <section class="mb-12 bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
             <h3 class="text-2xl font-semibold text-indigo-900 mb-6 text-center">Resumo Financeiro</h3>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="bg-indigo-50 rounded-lg p-4 text-center">
                     <div class="text-sm font-medium text-indigo-700 mb-1">Valor Total</div>
@@ -351,7 +422,7 @@
                     <div class="text-2xl font-bold text-red-900" id="remainingAmount">R$ 5.000,00</div>
                 </div>
             </div>
-            
+
             <div class="mb-4">
                 <div class="flex justify-between text-sm text-gray-600 mb-1">
                     <span>Progresso do pagamento</span>
@@ -361,7 +432,7 @@
                     <div class="progress-bar bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-purple-50 rounded-lg p-4">
                     <div class="text-sm font-medium text-purple-700 mb-1">Valor por pessoa</div>
@@ -374,37 +445,53 @@
             </div>
         </section>
 
-         <!-- Admin Panel Toggle -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto mb-10 ">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Pix para pagamento:</h3>
+            <img class="mx-auto block max-w-full h-auto" src="img/WhatsApp Image 2025-07-24 at 12.11.09.jpeg"
+                alt="img pix">
+            <h3 class="text-2xl font-semibold text-indigo-900 mb-4 text-center">Chave pix: 17282663785 - Valor de 167,65
+            </h3>
+        </div>
+
+        <!-- Admin Panel Toggle -->
         <div class="text-center mb-8">
-            <button id="adminToggle" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition duration-300">
+            <button id="adminToggle"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition duration-300">
                 <i class="fas fa-lock mr-2"></i> Acesso Administrativo
             </button>
         </div>
 
         <!-- Admin Panel (Hidden by default) -->
-        <div id="adminPanel" class="admin-panel bg-white rounded-xl shadow-lg p-6 mb-10 max-w-4xl mx-auto" style="display:none">
+        <div id="adminPanel" class="admin-panel bg-white rounded-xl shadow-lg p-6 mb-10 max-w-4xl mx-auto"
+            style="display:none">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Painel Administrativo</h3>
-            
+
             <div class="mb-6">
                 <label for="newPerson" class="block text-sm font-medium text-gray-700 mb-1">Adicionar Pessoa:</label>
                 <div class="flex">
-                    <input type="text" id="newPerson" class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nome completo">
-                    <button id="addPersonBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
+                    <input type="text" id="newPerson"
+                        class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Nome completo">
+                    <button id="addPersonBtn"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
                         <i class="fas fa-plus mr-1"></i> Adicionar
                     </button>
                 </div>
             </div>
-            
+
             <div class="mb-4">
-                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de Administrador:</label>
-                <input type="password" id="adminPassword" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Digite a senha">
+                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de
+                    Administrador:</label>
+                <input type="password" id="adminPassword"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Digite a senha">
             </div>
         </div>
 
         <!-- Participants List -->
         <section class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
             <h3 class="text-2xl font-semibold text-indigo-900 mb-6 text-center">Lista de Participantes</h3>
-            
+
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
@@ -419,7 +506,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="mt-4 text-sm text-gray-500">
                 <i class="fas fa-info-circle mr-1"></i> Apenas o administrador pode editar os pagamentos.
             </div>
@@ -427,7 +514,7 @@
 
         <!-- Footer -->
         <footer class="mt-12 text-center text-gray-600 text-sm">
-            <p>Viagem para o show em 02/01/2026 • Aluguel da casa: 30/12/2025 a 03/01/2026</p>
+            <p>Viagem para o show em 02/01/2026 • Aluguel da casa: 30/12/2025 a 04/01/2026</p>
             <p class="mt-1">Desenvolvido com ❤️ para amigos</p>
         </footer>
     </div>
@@ -438,77 +525,77 @@
             const showDate = new Date('2026-01-02T00:00:00').getTime();
             const now = new Date().getTime();
             const distance = showDate - now;
-            
+
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
+
             document.getElementById('days').textContent = days.toString().padStart(2, '0');
             document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
-        
+
         setInterval(updateCountdown, 1000);
         updateCountdown();
-        
+
         // Slideshow functionality
         let slideIndex = {
             house: 1,
             show: 1
         };
-        
+
         function showSlides(type) {
             let i;
             const slides = document.querySelectorAll(`.${type}-slides .slide`);
             const dots = document.querySelectorAll(`.${type}-dots .dot`);
-            
+
             if (slides.length === 0) return;
-            
+
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
-            
+
             for (i = 0; i < dots.length; i++) {
                 dots[i].className = dots[i].className.replace(" active-dot", "");
             }
-            
-            slides[slideIndex[type]-1].style.display = "block";
-            dots[slideIndex[type]-1].className += " active-dot";
+
+            slides[slideIndex[type] - 1].style.display = "block";
+            dots[slideIndex[type] - 1].className += " active-dot";
         }
-        
+
         function plusSlides(n, type) {
             const slides = document.querySelectorAll(`.${type}-slides .slide`);
             if (slides.length === 0) return;
-            
+
             slideIndex[type] += n;
             if (slideIndex[type] > slides.length) { slideIndex[type] = 1; }
             if (slideIndex[type] < 1) { slideIndex[type] = slides.length; }
-            
+
             // Hide all slides
             const allSlides = document.querySelectorAll(`.slide`);
             allSlides.forEach(slide => {
                 slide.classList.remove('active-slide');
             });
-            
+
             // Show current slide
             const currentSlide = document.querySelectorAll(`.slide`)[getSlidePosition(type, slideIndex[type])];
             currentSlide.classList.add('active-slide');
-            
+
             // Update dots
             const dots = document.querySelectorAll(`.dot`);
             dots.forEach(dot => dot.classList.remove('active-dot'));
-            
+
             const activeDot = document.querySelectorAll(`.dot`)[getSlidePosition(type, slideIndex[type])];
             if (activeDot) activeDot.classList.add('active-dot');
         }
-        
+
         function currentSlide(n, type) {
             slideIndex[type] = n;
             showSlides(type);
         }
-        
+
         function getSlidePosition(type, index) {
             if (type === 'house') {
                 return index - 1;
@@ -517,16 +604,16 @@
                 return 4 + (index - 1);
             }
         }
-        
+
         // Initialize slides
         showSlides('house');
         showSlides('show');
-        
+
         // Admin panel toggle
         const adminToggle = document.getElementById('adminToggle');
         const adminPanel = document.getElementById('adminPanel');
         let isAdmin = false;
-        
+
         function updateAdminPanel() {
             if (isAdmin) {
                 adminPanel.style.display = '';
@@ -537,7 +624,7 @@
             renderParticipants();
             updatePaymentSummary();
         }
-        
+
         adminToggle.addEventListener('click', () => {
             if (!isAdmin) {
                 const password = prompt("Digite a senha de administrador:");
@@ -557,7 +644,7 @@
             }
             updateAdminPanel();
         });
-        
+
         // Meses de Julho a Janeiro
         const monthNames = ["Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"];
         let totalHouseValue = 5000;
@@ -614,7 +701,7 @@
                 // Linha principal
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-100 expandable-row';
-                tr.onclick = function(e) {
+                tr.onclick = function (e) {
                     if (e.target.tagName === 'INPUT' || e.target.classList.contains('delete-btn')) return;
                     if (expandedIdx === idx) {
                         expandedIdx = null;
@@ -666,7 +753,7 @@
             });
             updatePaymentSummary();
         }
-        window.toggleMonthPayment = function(checkbox) {
+        window.toggleMonthPayment = function (checkbox) {
             if (!isAdmin) return;
             const pidx = +checkbox.dataset.pidx;
             const midx = +checkbox.dataset.midx;
@@ -675,7 +762,7 @@
             newMonthsPaid[midx] = checkbox.checked;
             updateParticipant(participant.id, { monthsPaid: newMonthsPaid });
         };
-        window.deleteParticipant = function(id) {
+        window.deleteParticipant = function (id) {
             if (!isAdmin) return;
             if (confirm('Tem certeza que deseja excluir este participante?')) {
                 deleteParticipantFirestore(id);
@@ -700,14 +787,14 @@
             }
             if (isAdmin) {
                 const editSpan = document.getElementById('editTotalValue');
-                editSpan.onclick = function(e) {
+                editSpan.onclick = function (e) {
                     e.stopPropagation();
                     const input = document.createElement('input');
                     input.type = 'number';
                     input.className = 'edit-input';
                     input.value = totalHouseValue;
                     input.onblur = saveEdit;
-                    input.onkeydown = function(ev) { if (ev.key === 'Enter') saveEdit(); };
+                    input.onkeydown = function (ev) { if (ev.key === 'Enter') saveEdit(); };
                     editSpan.replaceWith(input);
                     input.focus();
                     function saveEdit() {
@@ -739,4 +826,5 @@
         showSlides('show');
     </script>
 </body>
+
 </html>
