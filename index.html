@@ -292,7 +292,7 @@
                     </p>
                 </div>
                 <!-- Slides -->
-                <div class="relative h-64 md:h-96">
+                <div class="house-slides relative h-64 md:h-96">
                     <div class="slide active-slide">
                         <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI4NzYzNzAzMjQ1Mjk4MjQyNg%3D%3D/original/644bf022-913e-4afd-86a4-d8dd9e8bbbaa.jpeg?im_w=1440"
                             alt="Casa de luxo" class="w-full h-full object-cover">
@@ -323,13 +323,13 @@
                         <i class="fas fa-chevron-right"></i>
                     </button>
                     <a href="https://www.airbnb.com.br/rooms/1287637032452982426?adults=7&check_in=2025-12-30&check_out=2026-01-04&search_mode=regular_search&source_impression_id=p3_1753106112_P33LOpIw5vibLVtm&previous_page_section_name=1000&federated_search_id=60ce5b81-706c-4278-9eb8-d4f61d9b9b71"
-                        target="_blank" class="banner-link-btn">Ver Casa no Airbnb</a>
+                        target="_blank" class="banner-link-btn">🏡 Airbnb</a>
 
 
                 </div>
 
                 <!-- Dots -->
-                <div class="text-center py-4">
+                <div class=" house-dots text-center py-4">
                     <span class="dot active-dot" onclick="currentSlide(1, 'house')"></span>
                     <span class="dot" onclick="currentSlide(2, 'house')"></span>
                     <span class="dot" onclick="currentSlide(3, 'house')"></span>
@@ -357,7 +357,7 @@
                         para uma noite histórica no Espírito Santo! </p>
                 </div>
                 <!-- Slides -->
-                <div class="relative h-64 md:h-96">
+                <div class=" show-slides h-64 md:h-96">
                     <div class="slide active-slide">
                         <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
                             alt="Show de música eletrônica" class="w-full h-full object-cover">
@@ -382,12 +382,13 @@
                         onclick="plusSlides(1, 'show')">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="banner-link-btn">Comprar
+                    <a href="https://zig.tickets/eventos/martin-garrix" target="_blank" class="banner-link-btn">🎟️
+                        Comprar
                         Ingresso</a>
                 </div>
 
                 <!-- Dots -->
-                <div class="text-center py-4">
+                <div class=" show-dots text-center py-4">
                     <span class="dot active-dot" onclick="currentSlide(1, 'show')"></span>
                     <span class="dot" onclick="currentSlide(2, 'show')"></span>
                     <span class="dot" onclick="currentSlide(3, 'show')"></span>
@@ -472,6 +473,9 @@
                     <input type="text" id="newPerson"
                         class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         placeholder="Nome completo">
+                    <input type="text" id="newPersonCPF"
+                        class="rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="CPF (apenas números)">
                     <button id="addPersonBtn"
                         class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
                         <i class="fas fa-plus mr-1"></i> Adicionar
@@ -547,22 +551,19 @@
         };
 
         function showSlides(type) {
-            let i;
             const slides = document.querySelectorAll(`.${type}-slides .slide`);
             const dots = document.querySelectorAll(`.${type}-dots .dot`);
-
             if (slides.length === 0) return;
 
-            for (i = 0; i < slides.length; i++) {
+            for (let i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
-
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active-dot", "");
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove("active-dot");
             }
 
             slides[slideIndex[type] - 1].style.display = "block";
-            dots[slideIndex[type] - 1].className += " active-dot";
+            dots[slideIndex[type] - 1].classList.add("active-dot");
         }
 
         function plusSlides(n, type) {
@@ -572,37 +573,12 @@
             slideIndex[type] += n;
             if (slideIndex[type] > slides.length) { slideIndex[type] = 1; }
             if (slideIndex[type] < 1) { slideIndex[type] = slides.length; }
-
-            // Hide all slides
-            const allSlides = document.querySelectorAll(`.slide`);
-            allSlides.forEach(slide => {
-                slide.classList.remove('active-slide');
-            });
-
-            // Show current slide
-            const currentSlide = document.querySelectorAll(`.slide`)[getSlidePosition(type, slideIndex[type])];
-            currentSlide.classList.add('active-slide');
-
-            // Update dots
-            const dots = document.querySelectorAll(`.dot`);
-            dots.forEach(dot => dot.classList.remove('active-dot'));
-
-            const activeDot = document.querySelectorAll(`.dot`)[getSlidePosition(type, slideIndex[type])];
-            if (activeDot) activeDot.classList.add('active-dot');
+            showSlides(type);
         }
 
         function currentSlide(n, type) {
             slideIndex[type] = n;
             showSlides(type);
-        }
-
-        function getSlidePosition(type, index) {
-            if (type === 'house') {
-                return index - 1;
-            } else {
-                // For show slides, we need to offset by the number of house slides (4)
-                return 4 + (index - 1);
-            }
         }
 
         // Initialize slides
@@ -645,8 +621,8 @@
             updateAdminPanel();
         });
 
-        // Meses de Julho a Janeiro
-        const monthNames = ["Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"];
+        // Meses de Agosto a Janeiro
+        const monthNames = ["Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"];
         let totalHouseValue = 5000;
         let participants = [];
         let expandedIdx = null;
@@ -672,8 +648,8 @@
         function saveTotalHouseValue(val) {
             totalValueDoc.set({ value: val });
         }
-        function addParticipant(name) {
-            participantsCol.add({ name, monthsPaid: [false, false, false, false, false, false, false] });
+        function addParticipant(name, cpf) {
+            participantsCol.add({ name, cpf, monthsPaid: [false, false, false, false, false, false, false], proofs: [null, null, null, null, null, null, null] });
         }
         function updateParticipant(id, data) {
             participantsCol.doc(id).update(data);
@@ -685,7 +661,7 @@
             return participants.length > 0 ? totalHouseValue / participants.length : 0;
         }
         function getPerMonth() {
-            return getPerPerson() / 7;
+            return getPerPerson() / 6;
         }
         function getTotalPaid() {
             let total = 0;
@@ -814,16 +790,31 @@
                 return;
             }
             const nameInput = document.getElementById('newPerson');
+            const cpfInput = document.getElementById('newPersonCPF');
             const name = nameInput.value.trim();
-            if (name) {
-                addParticipant(name);
+            const cpf = cpfInput.value.trim();
+            if (name && cpf) {
+                addParticipant(name, cpf);
                 nameInput.value = '';
+                cpfInput.value = '';
             }
         });
         // Initialize
         updateAdminPanel();
         showSlides('house');
         showSlides('show');
+        window.uploadProof = function(input) {
+            const pidx = +input.dataset.pidx;
+            const midx = +input.dataset.midx;
+            const participant = participants[pidx];
+            const file = input.files[0];
+            if (!file) return;
+            // Simulação: salva o nome do arquivo como comprovante
+            const fakeUrl = URL.createObjectURL(file);
+            const newProofs = [...participant.proofs];
+            newProofs[midx] = fakeUrl;
+            updateParticipant(participant.id, { proofs: newProofs });
+        };
     </script>
 </body>
 
