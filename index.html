@@ -474,11 +474,21 @@
                         class="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         placeholder="Nome completo">
                     <input type="text" id="newPersonCPF"
-                        class="rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        placeholder="CPF (apenas números)">
+                        class="border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="CPF (apenas números)" maxlength="11">
                     <button id="addPersonBtn"
                         class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
                         <i class="fas fa-plus mr-1"></i> Adicionar
+                    </button>
+                </div>
+                <div class="mt-2">
+                    <button id="createTestBtn" onclick="createTestParticipants()"
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                        <i class="fas fa-magic mr-1"></i> Criar Participantes de Teste
+                    </button>
+                    <button id="clearListBtn" onclick="clearParticipantsList()"
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition duration-300 ml-2">
+                        <i class="fas fa-trash mr-1"></i> Limpar Lista
                     </button>
                 </div>
             </div>
@@ -626,9 +636,27 @@
         let totalHouseValue = 5000;
         let participants = [];
         let expandedIdx = null;
+        let authenticatedCPF = null; // CPF autenticado para upload de comprovantes
+        
         // Referências do Firestore
         const totalValueDoc = db.collection('viagem').doc('totalHouseValue');
         const participantsCol = db.collection('viagem').doc('data').collection('participants');
+
+        // Função para autenticar CPF
+        function authenticateCPF(cpf) {
+            // Verifica se o CPF existe na lista de participantes
+            const participant = participants.find(p => p.cpf === cpf);
+            if (participant) {
+                authenticatedCPF = cpf;
+                return true;
+            }
+            return false;
+        }
+
+        // Função para verificar se o usuário está autenticado
+        function isAuthenticated() {
+            return authenticatedCPF !== null;
+        }
 
         // Carregar valor total em tempo real
         totalValueDoc.onSnapshot(doc => {
@@ -649,7 +677,12 @@
             totalValueDoc.set({ value: val });
         }
         function addParticipant(name, cpf) {
-            participantsCol.add({ name, cpf, monthsPaid: [false, false, false, false, false, false, false], proofs: [null, null, null, null, null, null, null] });
+            participantsCol.add({ 
+                name, 
+                cpf, 
+                monthsPaid: [false, false, false, false, false, false], 
+                proofs: [null, null, null, null, null, null] 
+            });
         }
         function updateParticipant(id, data) {
             participantsCol.doc(id).update(data);
@@ -678,7 +711,7 @@
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-100 expandable-row';
                 tr.onclick = function (e) {
-                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('delete-btn')) return;
+                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('delete-btn') || e.target.tagName === 'BUTTON') return;
                     if (expandedIdx === idx) {
                         expandedIdx = null;
                     } else {
@@ -694,7 +727,7 @@
                 const tdStatus = document.createElement('td');
                 tdStatus.className = 'py-3 text-center';
                 const pagos = participant.monthsPaid.filter(Boolean).length;
-                tdStatus.innerHTML = `<span class="${pagos === 7 ? 'text-green-600' : pagos > 0 ? 'text-yellow-600' : 'text-red-600'} font-medium">${pagos === 7 ? 'Completo' : pagos > 0 ? 'Parcial' : 'Pendente'}</span>`;
+                tdStatus.innerHTML = `<span class="${pagos === 6 ? 'text-green-600' : pagos > 0 ? 'text-yellow-600' : 'text-red-600'} font-medium">${pagos === 6 ? 'Completo' : pagos > 0 ? 'Parcial' : 'Pendente'}</span>`;
                 // Valor pago
                 const tdValor = document.createElement('td');
                 tdValor.className = 'py-3 text-right font-medium';
@@ -710,16 +743,51 @@
                 const tdExpand = document.createElement('td');
                 tdExpand.colSpan = 3;
                 tdExpand.className = 'py-2 px-4';
-                // Meses com checkbox (em coluna)
+                
+                // Verificar se o usuário está autenticado para este participante
+                const canUploadProofs = isAuthenticated() && authenticatedCPF === participant.cpf;
+                
+                // Meses com checkbox e upload de comprovantes
                 let mesesHtml = '<div class="months-list">';
                 participant.monthsPaid.forEach((paid, mIdx) => {
-                    mesesHtml += `<label class="flex items-center gap-2 bg-white rounded shadow px-2 py-1">
+                    const hasProof = participant.proofs[mIdx];
+                    mesesHtml += `<div class="flex items-center gap-2 bg-white rounded shadow px-2 py-1 mb-2">
                         <input type="checkbox" data-pidx="${idx}" data-midx="${mIdx}" ${paid ? 'checked' : ''} ${!isAdmin ? 'disabled' : ''} onchange="toggleMonthPayment(this)">
-                        <span class="${paid ? 'text-green-700' : 'text-gray-700'}">${monthNames[mIdx]}</span>
+                        <span class="${paid ? 'text-green-700' : 'text-gray-700'} min-w-[80px]">${monthNames[mIdx]}</span>
                         <span class="text-xs ml-1">R$ ${getPerMonth().toFixed(2).replace('.', ',')}</span>
-                    </label>`;
+                        ${canUploadProofs ? `
+                            <input type="file" 
+                                   data-pidx="${idx}" 
+                                   data-midx="${mIdx}" 
+                                   accept="image/*,.pdf" 
+                                   onchange="uploadProof(this)" 
+                                   class="text-xs ml-2">
+                            ${hasProof ? '<span class="text-green-600 text-xs">✓ Comprovante</span>' : '<span class="text-gray-500 text-xs">Sem comprovante</span>'}
+                        ` : ''}
+                    </div>`;
                 });
                 mesesHtml += '</div>';
+                
+                // Botão de autenticação se não estiver autenticado
+                if (!canUploadProofs) {
+                    mesesHtml += `
+                        <div class="mt-3 p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-2">Para adicionar comprovantes, digite seu CPF:</p>
+                            <div class="flex gap-2">
+                                <input type="text" 
+                                       id="authCPF-${idx}" 
+                                       placeholder="Digite seu CPF" 
+                                       maxlength="11" 
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                                <button onclick="authenticateUser(${idx})" 
+                                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm">
+                                    Autenticar
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                
                 if (isAdmin) {
                     mesesHtml += `<button class="delete-btn" onclick="deleteParticipant('${participant.id}')">Excluir participante</button>`;
                 }
@@ -793,27 +861,128 @@
             const cpfInput = document.getElementById('newPersonCPF');
             const name = nameInput.value.trim();
             const cpf = cpfInput.value.trim();
-            if (name && cpf) {
-                addParticipant(name, cpf);
-                nameInput.value = '';
-                cpfInput.value = '';
+            
+            if (!name) {
+                alert("Digite o nome da pessoa.");
+                return;
             }
+            
+            if (!cpf) {
+                alert("Digite o CPF da pessoa.");
+                return;
+            }
+            
+            if (cpf.length !== 11 || !/^\d+$/.test(cpf)) {
+                alert("CPF deve conter exatamente 11 números.");
+                return;
+            }
+            
+            // Verificar se o CPF já existe
+            if (participants.find(p => p.cpf === cpf)) {
+                alert("Este CPF já está cadastrado.");
+                return;
+            }
+            
+            addParticipant(name, cpf);
+            nameInput.value = '';
+            cpfInput.value = '';
         });
         // Initialize
         updateAdminPanel();
         showSlides('house');
         showSlides('show');
+        
+        // Função para criar participantes de teste (apenas para desenvolvimento)
+        function createTestParticipants() {
+            if (participants.length === 0) {
+                const testParticipants = [
+                    { name: "João Silva", cpf: "12345678901" },
+                    { name: "Maria Santos", cpf: "98765432100" },
+                    { name: "Pedro Oliveira", cpf: "45678912345" },
+                    { name: "Ana Costa", cpf: "78912345678" }
+                ];
+                
+                testParticipants.forEach(p => {
+                    addParticipant(p.name, p.cpf);
+                });
+                
+                alert("Participantes de teste criados com sucesso!\n\nCPFs para teste:\n• João Silva: 12345678901\n• Maria Santos: 98765432100\n• Pedro Oliveira: 45678912345\n• Ana Costa: 78912345678");
+            } else {
+                alert("Já existem participantes cadastrados. Limpe a lista primeiro se quiser criar novos participantes de teste.");
+            }
+        }
+        
+        // Descomente a linha abaixo para criar participantes de teste automaticamente
+        // createTestParticipants();
         window.uploadProof = function(input) {
             const pidx = +input.dataset.pidx;
             const midx = +input.dataset.midx;
             const participant = participants[pidx];
             const file = input.files[0];
             if (!file) return;
+            
+            // Verificar se o usuário está autenticado para este participante
+            if (!isAuthenticated() || authenticatedCPF !== participant.cpf) {
+                alert('Você precisa estar autenticado para fazer upload de comprovantes.');
+                input.value = '';
+                return;
+            }
+            
+            // Verificar tipo de arquivo
+            if (!file.type.match('image.*') && file.type !== 'application/pdf') {
+                alert('Apenas imagens e PDFs são permitidos.');
+                input.value = '';
+                return;
+            }
+            
+            // Verificar tamanho do arquivo (máximo 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('O arquivo deve ter no máximo 5MB.');
+                input.value = '';
+                return;
+            }
+            
             // Simulação: salva o nome do arquivo como comprovante
             const fakeUrl = URL.createObjectURL(file);
             const newProofs = [...participant.proofs];
             newProofs[midx] = fakeUrl;
             updateParticipant(participant.id, { proofs: newProofs });
+            
+            // Atualizar a interface
+            renderParticipants();
+        };
+        
+        // Função para autenticar usuário
+        window.authenticateUser = function(pidx) {
+            const cpfInput = document.getElementById(`authCPF-${pidx}`);
+            const cpf = cpfInput.value.trim();
+            
+            if (!cpf) {
+                alert('Digite seu CPF.');
+                return;
+            }
+            
+            if (authenticateCPF(cpf)) {
+                alert('Autenticação realizada com sucesso! Agora você pode fazer upload de comprovantes.');
+                cpfInput.value = '';
+                renderParticipants();
+            } else {
+                alert('CPF não encontrado na lista de participantes.');
+                cpfInput.value = '';
+            }
+        };
+
+        // Função para limpar a lista de participantes
+        window.clearParticipantsList = function() {
+            if (confirm('Tem certeza que deseja limpar a lista de participantes? Esta ação não pode ser desfeita.')) {
+                participantsCol.get().then(snapshot => {
+                    snapshot.docs.forEach(doc => {
+                        doc.ref.delete();
+                    });
+                    alert('Lista de participantes limpa com sucesso!');
+                    renderParticipants(); // Re-render para refletir a limpeza
+                });
+            }
         };
     </script>
 </body>
